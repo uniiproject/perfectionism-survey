@@ -54,14 +54,17 @@ body{
 
 <script>
 
-const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
+let step = -1;
+let answers = {};
+
+const app = document.getElementById('app');
 
 const introText = `شرکت‌کننده گرامی،
 
-این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی انجام می‌شود.
-اطلاعات شما کاملاً محرمانه است.
+این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی است.
+اطلاعات شما کاملاً محرمانه خواهد بود.
 
-با سپاس از همکاری شما.`;
+با تشکر از همکاری شما.`;
 
 const questions = [
 'نمیتوانم اشتباه را تحمل کنم.',
@@ -76,19 +79,13 @@ const questions = [
 'دیگران را زیاد نقد میکنم.',
 'از عملکرد دیگران راضی نیستم.',
 'کار نصفه را قبول ندارم.',
-'در کودکی زیاد سرزنش می‌شدم.'
+'در کودکی زیاد سرزنش شدم.'
 ];
 
 const options = ['کاملاً موافق','موافق','نظری ندارم','مخالف','کاملاً مخالف'];
 
-let step = -1;
-let answers = {};
-
-const app = document.getElementById('app');
-
 function render(){
 
-  // 🟣 صفحه معرفی
   if(step === -1){
     app.innerHTML = `
       <div>
@@ -99,7 +96,6 @@ function render(){
     return;
   }
 
-  // 🟢 اطلاعات فردی
   if(step === 0){
     app.innerHTML = `
       <div>
@@ -117,7 +113,6 @@ function render(){
     return;
   }
 
-  // 🔵 سوالات
   const q = questions[step - 1];
 
   app.innerHTML = `
@@ -137,13 +132,11 @@ function render(){
   `;
 }
 
-/* شروع معرفی */
 window.startIntro = function(){
   step = 0;
   render();
 }
 
-/* شروع پرسشنامه */
 window.startSurvey = function(){
   const g = document.querySelector('input[name=g]:checked');
 
@@ -159,7 +152,6 @@ window.startSurvey = function(){
   render();
 }
 
-/* سوال بعدی */
 window.next = function(){
   const a = document.querySelector('input[name=ans]:checked');
 
@@ -178,22 +170,11 @@ window.next = function(){
   }
 }
 
-/* پایان + ارسال به گوگل شیت */
 function finish(){
-
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      age: answers.age,
-      gender: answers.gender,
-      answers: questions.map((_,i)=>answers['q'+(i+1)])
-    })
-  });
-
   app.innerHTML = `
     <div>
       <h2>🎉 پایان پرسشنامه</h2>
-      <p>پاسخ شما با موفقیت ثبت شد.</p>
+      <p>از مشارکت شما سپاسگزاریم</p>
     </div>
   `;
 }
@@ -203,121 +184,4 @@ render();
 </script>
 
 </body>
-</html>}
-
-window.start = function(){
-  step = 0;
-  render();
-}
-
-window.next = function(){
-  const a = document.querySelector('input[name=a]:checked');
-  if(!a){ alert("یک گزینه انتخاب کن"); return; }
-
-  answers[step] = a.value;
-
-  step++;
-
-  if(step >= questions.length){
-    finish();
-  } else {
-    render();
-  }
-}
-
-function finish(){
-  app.innerHTML = `<h2>تمام شد 🎉</h2>`;
-}
-
-render();
-
-</script>
-
-</body>
-</html>.length) * 100 + '%' : '0%';
-
-  if(step === 0){
-    app.innerHTML = `
-      <div class="fade">
-        <h2>پرسشنامه کمال‌گرایی</h2>
-
-        <label>سن: <input id="age" type="number"></label><br><br>
-
-        <label><input type="radio" name="g" value="زن"> زن</label>
-        <label><input type="radio" name="g" value="مرد"> مرد</label>
-
-        <br>
-        <button class="btn" onclick="start()">شروع</button>
-      </div>
-    `;
-    return;
-  }
-
-  const q = questions[step - 1];
-
-  app.innerHTML = `
-    <div class="fade">
-      <h3>سوال ${step} از ${questions.length}</h3>
-      <p>${q}</p>
-
-      ${opts.map(o => `
-        <label class="option">
-          <input type="radio" name="ans" value="${o}">
-          ${o}
-        </label>
-      `).join('')}
-
-      <button class="btn" onclick="next()">بعدی</button>
-    </div>
-  `;
-}
-
-window.start = function(){
-  const g = document.querySelector('input[name=g]:checked');
-
-  if(!g){
-    alert('جنسیت را انتخاب کنید');
-    return;
-  }
-
-  answers.gender = g.value;
-  answers.age = document.getElementById('age').value;
-
-  step = 1;
-  render();
-}
-
-window.next = function(){
-  const a = document.querySelector('input[name=ans]:checked');
-
-  if(!a){
-    alert('یک گزینه انتخاب کنید');
-    return;
-  }
-
-  answers['q'+step] = a.value;
-
-  if(step < questions.length){
-    step++;
-    render();
-  } else {
-    finish();
-  }
-}
-
-function finish(){
-  bar.style.width = '100%';
-
-  app.innerHTML = `
-    <div class="fade">
-      <h2>🎉 پایان</h2>
-      <p>پاسخ‌ها ثبت شد</p>
-    </div>
-  `;
-}
-
-render();
-
-</script>
-</body>
-  </html>
+</html>
