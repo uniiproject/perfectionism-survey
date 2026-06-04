@@ -1,110 +1,227 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<!DOCTYPE html><html lang="fa" dir="rtl"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>پرسشنامه چندبعدی کمال گرایی</title>
+<title>پرسشنامه کمال‌گرایی</title>
+
+<!-- فونت فارسی بهتر -->
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 body{
-font-family:tahoma;
-background:linear-gradient(135deg,#fff0f5,#ffe4ec);
-margin:0;
-padding:20px;
+  font-family:'Vazirmatn',tahoma;
+  margin:0;
+  background:linear-gradient(135deg,#ffe4ec,#fff);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .box{
-max-width:760px;
-margin:20px auto;
-background:#fff;
-border-radius:24px;
-padding:30px;
-box-shadow:0 10px 30px rgba(236,72,153,.15);
-animation:fade .4s ease;
+  width:90%;
+  max-width:780px;
+  background:#fff;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  overflow:hidden;
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(10px);}
-to{opacity:1;transform:translateY(0);}
-}
-
+/* progress */
 .progress{
-height:10px;
-background:#fce7f3;
-border-radius:99px;
-overflow:hidden;
-margin-bottom:25px;
+  height:10px;
+  background:#f3d6e3;
+  border-radius:50px;
+  overflow:hidden;
+  margin-bottom:20px;
 }
-
 .bar{
-height:100%;
-background:linear-gradient(90deg,#f9a8d4,#ec4899);
-width:0%;
-transition:.4s;
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#ff7aa2,#ffb3c7);
+  transition:width .4s ease;
 }
 
+/* سوالات */
+.fade{
+  animation:fade .35s ease;
+}
+@keyframes fade{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* دکمه مدرن */
 .btn{
-background:#ec4899;
-color:#fff;
-border:none;
-padding:12px 22px;
-border-radius:14px;
-cursor:pointer;
-font-size:16px;
+  background:linear-gradient(135deg,#ff7aa2,#ff4f86);
+  color:#fff;
+  border:none;
+  padding:12px 20px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:15px;
+  transition:.3s;
+  margin-top:15px;
+  box-shadow:0 6px 15px rgba(255,79,134,.25);
+}
+.btn:hover{
+  transform:translateY(-2px);
 }
 
+/* گزینه‌ها */
 .option{
-display:block;
-padding:14px;
-border:2px solid #fbcfe8;
-border-radius:14px;
-margin:10px 0;
-cursor:pointer;
-transition:.2s;
-background:#fff;
+  display:block;
+  padding:12px;
+  border:1px solid #f0c2d1;
+  border-radius:12px;
+  margin:10px 0;
+  cursor:pointer;
+  transition:.3s;
 }
-
 .option:hover{
-background:#fdf2f8;
-border-color:#ec4899;
+  background:#ffeaf1;
+  transform:scale(1.01);
 }
 
-h1,h2,h3{
-color:#be185d;
+/* صفحه تشکر */
+.thanks{
+  text-align:center;
+  padding:40px 20px;
+  animation:fade .5s ease;
 }
+.thanks h2{
+  color:#ff4f86;
+}
+</style>
+</head>
 
-input[type=number]{
-padding:10px;
-border:1px solid #f9a8d4;
-border-radius:10px;
-width:100%;
-max-width:200px;
-}
+<body>
+
+<div class="box">
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div id="app"></div>
+</div>
+
 <script>
-const questions=['نمیتوانم حتی یک اشتباه را در کارم تحمل کنم.', 'به چیزی کمتر از کامل و ایده\u200cآل بودم قانع نمیشوم.', 'هرچقدر کاری را خوب انجام داده باشم، بازم از عملکردم ناراضی هستم.', 'وقتی به هدف هایم میرسم باز هم احساس نارضایتی میکنم.', 'احساس میکنم همیشه در زندگی (شغل،تحصیل و غیره) باید موفق باشم.', 'اهداف و آرمان هایم بسیار عالی هستند.', 'هرچقدر کاری را درست انجام داده باشم باز هم حس میکنم کاملا درست انجام نداده\u200cام.', 'اگر حتی یک اشتباه در کارم باشد ناراحت و آشفته میشوم.', 'درمورد هرکار جزئی که انجام میدهم تردید میکنم.', 'احساس میکنم که خیلی کمال گرا هستم.', 'از بستگانم انتظار دارم که کامل و ایده آل باشند.', 'وقتی از کسی میخواهم کاری را انجام دهد انتظار دارم کامل و بدون نقص انجام دهد.', 'حوصله کسانی که برای بهتر شدن خودشان تلاشو پیشرفت میکنند را ندارم.', 'نمیتوانم اشتباه دیگران را تحمل کنم.', 'هیچوقت از عملکرد دیگران احساس رضایت نمیکنم.', 'انتظار دارم دیگران همواره منظم و دقیق باشند.', 'وقتی کسی کاری را نصفه نیمه انجام میدهد، احساس میکنم اصلا کاری انجام نداده است.', 'انتظار دارم دیگران به دنبال اهداف و آرمان های عالی باشند.', 'تصور میکنم دیگران بتوانند انتظارات من را براورده سازند.', 'نمیتوانم نسبت به کسانی که برای تحقق اهداف و آرمان های عالی تلاش نمیکنند ،احساس خوبی داشته باشم.', 'خانواده از من توقع دارند کامل و ایده\u200cآل باشم.', 'اطرافیانم انتظار دارند در همه کارها موفق باشم.', 'وقتی کاری را انجام میدهم احساس میکنم دیگرام با دید انتقادی آن را قضاوت خواهند کرد.', 'هرچقدر کاری را عالی و بی نقض انجام می\u200cدهم بازهم دیگران انتظار دارند که کامل تر انجام دهم.', 'احساس میکنم دیگران بیش از حد از من توقع دارند.', 'در کودکی هرگاه کاری را درست انجام نمیدادم سرزنش و تنبیه میشدم.', 'والدینم هیچ وقت اشتباهات من را نادیده نگرفتند.', 'والدینم از من میخواستند که در هرکاری و هرچیزی عالی باشم.', 'تصور میکنم هرگز نمیتوانم انتظارات و توقعات خانواده ام را براورده سازم.', 'اگر اشتباهی از من سر بزند دیگران با دیده تحقیر به من نگاه میکنند.'];
-const opts=['کاملاً موافق', 'موافق', 'نظری ندارم', 'مخالف', 'کاملاً مخالف'];
-let step=0,answers={};
 
-function function autoNext(){
-setTimeout(nextQ,500);
-} render(){
- const app=document.getElementById('app');
- document.getElementById('bar').style.width=((step)/(questions.length+1))*100+'%';
- if(step===0){
- app.innerHTML=`<h1>پرسشنامه چندبعدی کمال گرایی</h1>
- <p>شرکت‌کننده گرامی، این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی تهیه شده است. تمامی اطلاعات و پاسخ‌های ارائه‌شده توسط شما کاملاً محرمانه تلقی شده و فقط برای اهداف علمی و پژوهشی مورد استفاده قرار خواهد گرفت.</p>
- <label>سن <input id="age" type="number"></label><br><br>
- <label><input type="radio" name="g" value="زن"> زن</label>
- <label><input type="radio" name="g" value="مرد"> مرد</label><br><br>
- <button class="btn" onclick="nextIntro()">شروع</button>`;
- return;
- }
- const q=questions[step-1];
- app.innerHTML=`<h3>سوال ${step} از 30</h3><p>${q}</p>`+opts.map(o=>`
-<label class="option">
-<input type="radio"
-name="ans"
-value="${o}"
-onchange="autoNext()">
-${o}
-</label>
+const questions = [
+'نمیتوانم حتی یک اشتباه را در کارم تحمل کنم.',
+'به چیزی کمتر از کامل و ایده‌آل قانع نمیشوم.',
+'هرچقدر کاری را خوب انجام داده باشم باز هم ناراضی هستم.',
+'وقتی به هدفم میرسم باز هم احساس نارضایتی میکنم.',
+'احساس میکنم همیشه باید موفق باشم.',
+'اهدافم بسیار عالی هستند.',
+'باز هم حس میکنم کامل انجام نداده‌ام.',
+'اگر اشتباهی باشد ناراحت میشوم.',
+'در کارهای جزئی تردید میکنم.',
+'خودم را کمال‌گرا می‌دانم.',
+'از دیگران انتظار کامل بودن دارم.',
+'تحمل اشتباه دیگران را ندارم.',
+'دیگران را زیاد قضاوت می‌کنم.',
+'از عملکرد دیگران رضایت ندارم.',
+'دیگران باید دقیق باشند.',
+'اگر کاری نصفه باشد بی‌ارزش است.',
+'از افراد بی‌هدف خوشم نمی‌آید.',
+'دیگران از من توقع زیادی دارند.',
+'احساس می‌کنم همیشه زیر نگاه انتقادی هستم.',
+'در کودکی زیاد سرزنش می‌شدم.'
+];
+
+const opts = ['کاملاً موافق','موافق','نظری ندارم','مخالف','کاملاً مخالف'];
+
+let step = 0;
+let answers = {};
+
+function render(){
+
+  const app = document.getElementById('app');
+  const bar = document.getElementById('bar');
+
+  bar.style.width = (step / questions.length) * 100 + '%';
+
+  if(step === 0){
+    app.innerHTML = `
+      <div class="fade">
+      <h2>پرسشنامه کمال‌گرایی</h2>
+      <p>لطفاً با دقت به سوالات پاسخ دهید.</p>
+
+      <label>سن: <input id="age" type="number"></label><br><br>
+
+      <label><input type="radio" name="g" value="زن"> زن</label>
+      <label><input type="radio" name="g" value="مرد"> مرد</label>
+
+      <br>
+      <button class="btn" onclick="nextIntro()">شروع</button>
+      </div>
+    `;
+    return;
+  }
+
+  const q = questions[step - 1];
+  const selected = answers['q'+step];
+
+  app.innerHTML = `
+    <div class="fade">
+    <h3>سوال ${step} از ${questions.length}</h3>
+    <p>${q}</p>
+
+    ${opts.map(o => `
+      <label class="option">
+        <input type="radio" name="ans" value="${o}" ${selected===o?'checked':''}>
+        ${o}
+      </label>
+    `).join('')}
+
+    <button class="btn" onclick="nextQ()">بعدی</button>
+    </div>
+  `;
+}
+
+function nextIntro(){
+
+  const age = document.getElementById('age').value;
+  const g = document.querySelector('input[name=g]:checked');
+
+  if(!g){
+    alert('لطفا جنسیت را انتخاب کنید');
+    return;
+  }
+
+  answers.age = age;
+  answers.gender = g.value;
+
+  step = 1;
+  render();
+}
+
+function nextQ(){
+
+  const a = document.querySelector('input[name=ans]:checked');
+  if(!a){
+    alert('لطفا یک گزینه انتخاب کنید');
+    return;
+  }
+
+  answers['q'+step] = a.value;
+
+  if(step < questions.length){
+    step++;
+    render();
+  } else {
+    showThanks();
+  }
+}
+
+function showThanks(){
+  document.getElementById('bar').style.width = '100%';
+
+  document.getElementById('app').innerHTML = `
+    <div class="thanks">
+      <h2>🎉 سپاس از شما</h2>
+      <p></label>
 `).join('');
 }
 function nextIntro(){
