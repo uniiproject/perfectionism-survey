@@ -87,49 +87,122 @@ body{
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
 
-  const questions = [
-    'نمیتوانم حتی یک اشتباه را در کارم تحمل کنم.',
-    'به چیزی کمتر از کامل قانع نمیشوم.',
-    'باز هم ناراضی هستم.',
-    'بعد از موفقیت هم احساس نارضایتی میکنم.',
-    'باید همیشه موفق باشم.',
-    'اهدافم خیلی ایده‌آل هستند.',
-    'هیچ وقت کامل نیستم.',
-    'اشتباه مرا ناراحت میکند.',
-    'در تصمیم‌ها تردید دارم.',
-    'خودم را کمال‌گرا می‌دانم.',
-    'از دیگران انتظار کامل بودن دارم.',
-    'اشتباه دیگران را تحمل نمیکنم.',
-    'دیگران را زیاد نقد میکنم.',
-    'از عملکرد دیگران راضی نیستم.',
-    'دیگران باید دقیق باشند.',
-    'کار نصفه را قبول ندارم.',
-    'از افراد بی‌هدف خوشم نمی‌آید.',
-    'دیگران از من توقع دارند.',
-    'زیر فشار قضاوت هستم.',
-    'در کودکی سرزنش می‌شدم.'
-  ];
+const questions = [
+  'نمیتوانم حتی یک اشتباه را در کارم تحمل کنم.',
+  'به چیزی کمتر از کامل قانع نمیشوم.',
+  'باز هم ناراضی هستم.',
+  'بعد از موفقیت هم احساس نارضایتی میکنم.',
+  'باید همیشه موفق باشم.',
+  'اهدافم خیلی ایده‌آل هستند.',
+  'هیچ وقت کامل نیستم.',
+  'اشتباه مرا ناراحت میکند.',
+  'در تصمیم‌ها تردید دارم.',
+  'خودم را کمال‌گرا می‌دانم.',
+  'از دیگران انتظار کامل بودن دارم.',
+  'اشتباه دیگران را تحمل نمیکنم.',
+  'دیگران را زیاد نقد میکنم.',
+  'از عملکرد دیگران راضی نیستم.',
+  'دیگران باید دقیق باشند.',
+  'کار نصفه را قبول ندارم.',
+  'از افراد بی‌هدف خوشم نمی‌آید.',
+  'دیگران از من توقع دارند.',
+  'زیر فشار قضاوت هستم.',
+  'در کودکی سرزنش می‌شدم.'
+];
 
-  const opts = ['کاملاً موافق','موافق','نظری ندارم','مخالف','کاملاً مخالف'];
+const opts = ['کاملاً موافق','موافق','نظری ندارم','مخالف','کاملاً مخالف'];
 
-  let step = 0;
-  let answers = {};
+let step = 0;
+let answers = {};
 
-  const app = document.getElementById('app');
-  const bar = document.getElementById('bar');
+const app = document.getElementById('app');
+const bar = document.getElementById('bar');
 
-  function render(){
+function render(){
 
-    bar.style.width = step ? (step / questions.length) * 100 + '%' : '0%';
+  bar.style.width = step ? (step / questions.length) * 100 + '%' : '0%';
 
-    if(step === 0){
-      app.innerHTML = `
-        <div class="fade">
-          <h2>پرسشنامه کمال‌گرایی</h2>
+  if(step === 0){
+    app.innerHTML = `
+      <div class="fade">
+        <h2>پرسشنامه کمال‌گرایی</h2>
 
-          <label>سن: <input id="age" type="number"></label><br><br>
+        <label>سن: <input id="age" type="number"></label><br><br>
 
-          <label><input type="radio" name="g" value="زن"> زن</label>
-          <label><input type="radio" name
+        <label><input type="radio" name="g" value="زن"> زن</label>
+        <label><input type="radio" name="g" value="مرد"> مرد</label>
+
+        <br>
+        <button class="btn" onclick="start()">شروع</button>
+      </div>
+    `;
+    return;
+  }
+
+  const q = questions[step - 1];
+
+  app.innerHTML = `
+    <div class="fade">
+      <h3>سوال ${step} از ${questions.length}</h3>
+      <p>${q}</p>
+
+      ${opts.map(o => `
+        <label class="option">
+          <input type="radio" name="ans" value="${o}">
+          ${o}
+        </label>
+      `).join('')}
+
+      <button class="btn" onclick="next()">بعدی</button>
+    </div>
+  `;
+}
+
+window.start = function(){
+  const g = document.querySelector('input[name=g]:checked');
+
+  if(!g){
+    alert('جنسیت را انتخاب کنید');
+    return;
+  }
+
+  answers.gender = g.value;
+  answers.age = document.getElementById('age').value;
+
+  step = 1;
+  render();
+}
+
+window.next = function(){
+  const a = document.querySelector('input[name=ans]:checked');
+
+  if(!a){
+    alert('یک گزینه انتخاب کنید');
+    return;
+  }
+
+  answers['q'+step] = a.value;
+
+  if(step < questions.length){
+    step++;
+    render();
+  } else {
+    finish();
+  }
+}
+
+function finish(){
+  bar.style.width = '100%';
+
+  app.innerHTML = `
+    <div class="fade">
+      <h2>🎉 پایان</h2>
+      <p>پاسخ‌ها ثبت شد</p>
+    </div>
+  `;
+}
+
+render();
+
+</script>
