@@ -1,7 +1,4 @@
-utf-8
-function render(){
-
-  bar.style.width = step ? (step / questions<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
@@ -13,24 +10,25 @@ function render(){
 body{
   font-family:tahoma;
   margin:0;
-  background:#ffe4ec;
+  background:linear-gradient(135deg,#ffe4ec,#fff);
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
 }
 
 .box{
   width:90%;
-  max-width:700px;
-  background:white;
+  max-width:750px;
+  background:#fff;
   padding:25px;
   border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
 }
 
 .btn{
   background:#ff4f86;
-  color:white;
+  color:#fff;
   border:none;
   padding:12px 18px;
   border-radius:10px;
@@ -56,21 +54,32 @@ body{
 
 <script>
 
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
+
 const introText = `شرکت‌کننده گرامی،
 
-این پرسشنامه صرفاً برای پژوهش دانشگاهی است.
+این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی انجام می‌شود.
 اطلاعات شما کاملاً محرمانه است.
 
-با تشکر از همکاری شما.`;
+با سپاس از همکاری شما.`;
 
 const questions = [
-'نمیتوانم اشتباه را تحمل کنم',
-'به کمتر از کامل راضی نیستم',
-'همیشه ناراضی هستم',
-'بعد موفقیت هم ناراحت میشوم'
+'نمیتوانم اشتباه را تحمل کنم.',
+'به کمتر از کامل راضی نیستم.',
+'بعد از موفقیت هم ناراضی هستم.',
+'باید همیشه موفق باشم.',
+'اهدافم خیلی ایده‌آل هستند.',
+'هیچ وقت کامل نیستم.',
+'اشتباه مرا ناراحت میکند.',
+'در تصمیم‌ها تردید دارم.',
+'از دیگران انتظار کامل بودن دارم.',
+'دیگران را زیاد نقد میکنم.',
+'از عملکرد دیگران راضی نیستم.',
+'کار نصفه را قبول ندارم.',
+'در کودکی زیاد سرزنش می‌شدم.'
 ];
 
-const opts = ['کاملاً موافق','موافق','مخالف','کاملاً مخالف'];
+const options = ['کاملاً موافق','موافق','نظری ندارم','مخالف','کاملاً مخالف'];
 
 let step = -1;
 let answers = {};
@@ -79,32 +88,122 @@ const app = document.getElementById('app');
 
 function render(){
 
-  // 🟣 صفحه اول
+  // 🟣 صفحه معرفی
   if(step === -1){
     app.innerHTML = `
-      <p style="white-space:pre-line">${introText}</p>
-      <button class="btn" onclick="start()">شروع</button>
+      <div>
+        <p style="white-space:pre-line; line-height:1.8">${introText}</p>
+        <button class="btn" onclick="startIntro()">شروع</button>
+      </div>
     `;
     return;
   }
 
-  // 🟢 سوالات
-  const q = questions[step];
+  // 🟢 اطلاعات فردی
+  if(step === 0){
+    app.innerHTML = `
+      <div>
+        <h3>اطلاعات فردی</h3>
+
+        <label>سن: <input id="age" type="number"></label><br><br>
+
+        <label><input type="radio" name="g" value="زن"> زن</label>
+        <label><input type="radio" name="g" value="مرد"> مرد</label>
+
+        <br>
+        <button class="btn" onclick="startSurvey()">ادامه</button>
+      </div>
+    `;
+    return;
+  }
+
+  // 🔵 سوالات
+  const q = questions[step - 1];
 
   app.innerHTML = `
-    <h3>سوال ${step+1} از ${questions.length}</h3>
-    <p>${q}</p>
+    <div>
+      <h3>سوال ${step} از ${questions.length}</h3>
+      <p>${q}</p>
 
-    ${opts.map(o => `
-      <label class="option">
-        <input type="radio" name="a" value="${o}">
-        ${o}
-      </label>
-    `).join('')}
+      ${options.map(o => `
+        <label class="option">
+          <input type="radio" name="ans" value="${o}">
+          ${o}
+        </label>
+      `).join('')}
 
-    <button class="btn" onclick="next()">بعدی</button>
+      <button class="btn" onclick="next()">بعدی</button>
+    </div>
   `;
 }
+
+/* شروع معرفی */
+window.startIntro = function(){
+  step = 0;
+  render();
+}
+
+/* شروع پرسشنامه */
+window.startSurvey = function(){
+  const g = document.querySelector('input[name=g]:checked');
+
+  if(!g){
+    alert('جنسیت را انتخاب کنید');
+    return;
+  }
+
+  answers.age = document.getElementById('age').value;
+  answers.gender = g.value;
+
+  step = 1;
+  render();
+}
+
+/* سوال بعدی */
+window.next = function(){
+  const a = document.querySelector('input[name=ans]:checked');
+
+  if(!a){
+    alert('یک گزینه انتخاب کنید');
+    return;
+  }
+
+  answers['q'+step] = a.value;
+
+  if(step < questions.length){
+    step++;
+    render();
+  } else {
+    finish();
+  }
+}
+
+/* پایان + ارسال به گوگل شیت */
+function finish(){
+
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      age: answers.age,
+      gender: answers.gender,
+      answers: questions.map((_,i)=>answers['q'+(i+1)])
+    })
+  });
+
+  app.innerHTML = `
+    <div>
+      <h2>🎉 پایان پرسشنامه</h2>
+      <p>پاسخ شما با موفقیت ثبت شد.</p>
+    </div>
+  `;
+}
+
+render();
+
+</script>
+
+</body>
+</html>}
 
 window.start = function(){
   step = 0;
