@@ -8,8 +8,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
 <style>
 body{
   font-family:'Vazirmatn',tahoma;
@@ -42,7 +40,7 @@ body{
   height:100%;
   width:0%;
   background:linear-gradient(90deg,#ff7aa2,#ffb3c7);
-  transition:width .4s ease;
+  transition:width .3s ease;
 }
 
 .btn{
@@ -64,17 +62,12 @@ body{
 }
 
 .fade{
-  animation:fade .25s ease;
+  animation:fade .2s ease;
 }
 
 @keyframes fade{
   from{opacity:0;transform:translateY(10px);}
   to{opacity:1;transform:translateY(0);}
-}
-
-.thanks{
-  text-align:center;
-  padding:40px 20px;
 }
 </style>
 </head>
@@ -88,23 +81,16 @@ body{
 
 <script>
 
+const introText = `
+شرکت‌کننده گرامی،
+
+این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی تهیه شده است. تمامی اطلاعات و پاسخ‌های شما کاملاً محرمانه بوده و فقط برای اهداف علمی استفاده می‌شود.
+
+از همکاری شما صمیمانه سپاسگزاریم.
+`;
+
 const questions = [
-  'نمیتوانم حتی یک اشتباه را در کارم تحمل کنم.',
-  'به چیزی کمتر از کامل قانع نمیشوم.',
-  'باز هم ناراضی هستم.',
-  'بعد از موفقیت هم احساس نارضایتی میکنم.',
-  'باید همیشه موفق باشم.',
-  'اهدافم خیلی ایده‌آل هستند.',
-  'هیچ وقت کامل نیستم.',
-  'اشتباه مرا ناراحت میکند.',
-  'در تصمیم‌ها تردید دارم.',
-  'خودم را کمال‌گرا می‌دانم.',
-  'از دیگران انتظار کامل بودن دارم.',
-  'اشتباه دیگران را تحمل نمیکنم.',
-  'دیگران را زیاد نقد میکنم.',
-  'از عملکرد دیگران راضی نیستم.',
-  'دیگران باید دقیق باشند.',
-  'کار نصفه را قبول ندارم.',
+'  'کار نصفه را قبول ندارم.',
   'از افراد بی‌هدف خوشم نمی‌آید.',
   'دیگران از من توقع دارند.',
   'زیر فشار قضاوت هستم.',
