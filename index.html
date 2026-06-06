@@ -54,7 +54,7 @@ body{
 
 <script>
 
-const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3WirPua6WTzvETcmdI_hHWM8ciNE2K1vjSZgJLR_ULB3rIgyoyG8xcGMhmIRQYW-YEQ/exec";
 
 /* 📌 متن معرفی کامل */
 const introText = `
@@ -108,7 +108,24 @@ const app = document.getElementById('app');
 
 /* ---------- UI ---------- */
 
-function render(){
+function finish(){
+
+  fetch("https://script.google.com/macros/s/AKfycbx3WirPua6WTzvETcmdI_hHWM8ciNE2K1vjSZgJLR_ULB3rIgyoyG8xcGMhmIRQYW-YEQ/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      age: answers.age,
+      gender: answers.gender,
+      answers: Object.values(answers).filter(v => typeof v === "string")
+    })
+  });
+
+  app.innerHTML = `
+    <div>
+      <h2>🎉 پایان پرسشنامه</h2>
+      <p>پاسخ شما ثبت شد</p>
+    </div>
+  `;
+}
 
   if(step === -1){
     app.innerHTML = `
