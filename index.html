@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!DOCTYPE html><html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>پرسشنامه کمال‌گرایی</title>
-
-<style>
+<title>پرسشنامه کمال‌گرایی</title><style>
 body{
   font-family:tahoma;
   margin:0;
@@ -16,7 +12,6 @@ body{
   justify-content:center;
   align-items:center;
 }
-
 .box{
   width:90%;
   max-width:750px;
@@ -25,7 +20,6 @@ body{
   border-radius:15px;
   box-shadow:0 10px 30px rgba(0,0,0,.1);
 }
-
 .btn{
   background:#ff4f86;
   color:#fff;
@@ -35,7 +29,6 @@ body{
   cursor:pointer;
   margin-top:15px;
 }
-
 .option{
   display:block;
   margin:10px 0;
@@ -43,60 +36,52 @@ body{
   border:1px solid #ddd;
   border-radius:10px;
 }
-</style>
-</head>
-
-<body>
-
-<div class="box">
+</style></head>
+<body><div class="box">
   <div id="app"></div>
-</div>
-
-<script>
+</div><script>
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3WirPua6WTzvETcmdI_hHWM8ciNE2K1vjSZgJLR_ULB3rIgyoyG8xcGMhmIRQYW-YEQ/exec";
 
-/* 📌 متن معرفی کامل */
 const introText = `
 شرکت‌کننده گرامی،
 
-این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی تهیه شده است. تمامی اطلاعات و پاسخ‌ها کاملاً محرمانه هستند و فقط برای اهداف علمی استفاده می‌شوند.
+این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی تهیه شده است. تمامی اطلاعات و پاسخ‌های ارائه‌شده توسط شما کاملاً محرمانه تلقی شده و فقط برای اهداف علمی و پژوهشی مورد استفاده قرار خواهد گرفت. همچنین هیچ‌یک از اطلاعات فردی یا نتایج پاسخ‌ها در اختیار اشخاص یا نهادهای دیگر قرار نخواهد گرفت و از انتشار آن‌ها به هر شکل جلوگیری خواهد شد.
 
-از همکاری شما سپاسگزاریم.
+از اینکه با صرف وقت و دقت خود در این پژوهش مشارکت می‌کنید، صمیمانه سپاسگزاریم. همکاری ارزشمند شما نقش مهمی در پیشبرد این تحقیق خواهد داشت.
 `;
 
-/* 📌 ۳۰ سوال واقعی شما */
 const questions = [
 "نمیتوانم حتی یک اشتباه را در کارم تحمل کنم.",
-"به چیزی کمتر از کامل و ایده‌آل بودن قانع نمیشوم.",
-"هرچقدر کاری را خوب انجام داده باشم، باز هم ناراضی هستم.",
-"وقتی به هدف هایم میرسم باز هم احساس نارضایتی میکنم.",
-"احساس میکنم همیشه باید موفق باشم.",
+"به چیزی کمتر از کامل و ایده‌آل بودم قانع نمیشوم.",
+"هرچقدر کاری را خوب انجام داده باشم، بازم از عملکردم ناراضی هستم.",
+"بعد از موفقیت هم احساس نارضایتی میکنم.",
+"احساس میکنم همیشه در زندگی باید موفق باشم.",
 "اهداف و آرمان هایم بسیار عالی هستند.",
-"هرچقدر کاری را درست انجام داده باشم باز هم حس میکنم کامل نیست.",
-"اگر حتی یک اشتباه در کارم باشد ناراحت میشوم.",
-"در مورد کارهای جزئی تردید میکنم.",
-"احساس میکنم خیلی کمال گرا هستم.",
-"از بستگانم انتظار کامل بودن دارم.",
-"وقتی از کسی کاری میخواهم انتظار دارم کامل انجام دهد.",
-"حوصله کسانی که برای بهتر شدن تلاش میکنند را ندارم.",
+"هرچقدر کاری را درست انجام داده باشم باز هم حس میکنم کاملا درست انجام نداده‌ام.",
+"اگر حتی یک اشتباه در کارم باشد ناراحت و آشفته میشوم.",
+"درمورد هرکار جزئی که انجام میدهم تردید میکنم.",
+"احساس میکنم که خیلی کمال گرا هستم.",
+"از بستگانم انتظار دارم که کامل و ایده آل باشند.",
+"وقتی از کسی میخواهم کاری را انجام دهد انتظار دارم کامل و بدون نقص انجام دهد.",
+"حوصله کسانی که برای بهتر شدن خودشان تلاش و پیشرفت میکنند را ندارم.",
 "نمیتوانم اشتباه دیگران را تحمل کنم.",
-"هیچوقت از عملکرد دیگران راضی نیستم.",
-"انتظار دارم دیگران منظم و دقیق باشند.",
-"اگر کاری نصفه انجام شود، انگار انجام نشده.",
-"انتظار دارم دیگران اهداف عالی داشته باشند.",
-"تصور میکنم دیگران باید انتظاراتم را برآورده کنند.",
-"نمی‌توانم نسبت به کسانی که تلاش نمی‌کنند احساس خوبی داشته باشم.",
-"خانواده از من توقع کامل بودن دارند.",
-"اطرافیان انتظار موفقیت کامل از من دارند.",
-"احساس میکنم دیگران کارهایم را با دید انتقادی نگاه میکنند.",
-"حتی وقتی عالی کار میکنم باز هم انتظار بیشتری هست.",
+"هیچوقت از عملکرد دیگران احساس رضایت نمیکنم.",
+"انتظار دارم دیگران همواره منظم و دقیق باشند.",
+"وقتی کسی کاری را نصفه نیمه انجام میدهد، احساس میکنم اصلا کاری انجام نداده است.",
+"انتظار دارم دیگران به دنبال اهداف و آرمان های عالی باشند.",
+"تصور میکنم دیگران بتوانند انتظارات من را براورده سازند.",
+"نمیتوانم نسبت به کسانی که برای تحقق اهداف و آرمان های عالی تلاش نمیکنند احساس خوبی داشته باشم.",
+"خانواده از من توقع دارند کامل و ایده‌آل باشم.",
+"اطرافیانم انتظار دارند در همه کارها موفق باشم.",
+"وقتی کاری را انجام میدهم احساس میکنم دیگران با دید انتقادی آن را قضاوت خواهند کرد.",
+"هرچقدر کاری را عالی و بی نقص انجام میدهم باز هم دیگران انتظار دارند کامل تر انجام دهم.",
 "احساس میکنم دیگران بیش از حد از من توقع دارند.",
-"در کودکی اگر اشتباه میکردم سرزنش میشدم.",
-"والدینم اشتباهاتم را نادیده نمی‌گرفتند.",
-"والدینم از من انتظار عالی بودن داشتند.",
-"احساس میکنم هیچوقت نمیتوانم توقعات خانواده را برآورده کنم.",
-"اگر اشتباه کنم دیگران تحقیرم میکنند."
+"در کودکی هرگاه کاری را درست انجام نمیدادم سرزنش و تنبیه میشدم.",
+"والدینم هیچ وقت اشتباهات من را نادیده نگرفتند.",
+"والدینم از من میخواستند که در هرکاری و هرچیزی عالی باشم.",
+"تصور میکنم هرگز نمیتوانم انتظارات و توقعات خانواده ام را براورده سازم.",
+"اگر اشتباهی از من سر بزند دیگران با دیده تحقیر به من نگاه میکنند."
 ];
 
 const options = ['کاملاً موافق','موافق','نظری ندارم','مخالف','کاملاً مخالف'];
@@ -106,137 +91,111 @@ let answers = {};
 
 const app = document.getElementById('app');
 
-/* ---------- UI ---------- */
-
-function finish(){
-
-  fetch("https://script.google.com/macros/s/AKfycbx3WirPua6WTzvETcmdI_hHWM8ciNE2K1vjSZgJLR_ULB3rIgyoyG8xcGMhmIRQYW-YEQ/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      age: answers.age,
-      gender: answers.gender,
-      answers: Object.values(answers).filter(v => typeof v === "string")
-    })
-  });
-
-  app.innerHTML = `
-    <div>
-      <h2>🎉 پایان پرسشنامه</h2>
-      <p>پاسخ شما ثبت شد</p>
-    </div>
-  `;
-}
+function render(){
 
   if(step === -1){
     app.innerHTML = `
-      <div>
-        <p style="white-space:pre-line; line-height:1.8">${introText}</p>
-        <button class="btn" onclick="startIntro()">شروع</button>
-      </div>
+      <p style="white-space:pre-line;line-height:2">${introText}</p>
+      <button class="btn" onclick="startIntro()">شروع</button>
     `;
     return;
   }
 
   if(step === 0){
     app.innerHTML = `
-      <div>
-        <h3>اطلاعات فردی</h3>
+      <h3>اطلاعات فردی</h3>
 
-        <label>سن: <input id="age" type="number"></label><br><br>
+      <label>سن:
+        <input id="age" type="number">
+      </label>
 
-        <label><input type="radio" name="g" value="زن"> زن</label>
-        <label><input type="radio" name="g" value="مرد"> مرد</label>
+      <br><br>
 
-        <br>
-        <button class="btn" onclick="startSurvey()">ادامه</button>
-      </div>
+      <label><input type="radio" name="g" value="زن"> زن</label>
+      <label><input type="radio" name="g" value="مرد"> مرد</label>
+
+      <br>
+
+      <button class="btn" onclick="startSurvey()">ادامه</button>
     `;
     return;
   }
 
-  const q = questions[step - 1];
+  const q = questions[step-1];
 
   app.innerHTML = `
-    <div>
-      <h3>سوال ${step} از ${questions.length}</h3>
-      <p>${q}</p>
+    <h3>سوال ${step} از ${questions.length}</h3>
+    <p>${q}</p>
 
-      ${options.map(o => `
-        <label class="option">
-          <input type="radio" name="ans" value="${o}">
-          ${o}
-        </label>
-      `).join('')}
+    ${options.map(o => `
+      <label class="option">
+        <input type="radio" name="ans" value="${o}">
+        ${o}
+      </label>
+    `).join('')}
 
-      <button class="btn" onclick="next()">بعدی</button>
-    </div>
+    <button class="btn" onclick="nextQuestion()">بعدی</button>
   `;
 }
 
-/* ---------- flow ---------- */
-
-window.startIntro = function(){
+function startIntro(){
   step = 0;
   render();
 }
 
-window.startSurvey = function(){
-  const g = document.querySelector('input[name=g]:checked');
+function startSurvey(){
 
-  if(!g){
-    alert('جنسیت را انتخاب کنید');
+  const gender = document.querySelector('input[name="g"]:checked');
+
+  if(!gender){
+    alert("جنسیت را انتخاب کنید");
     return;
   }
 
-  answers.age = document.getElementById('age').value;
-  answers.gender = g.value;
+  answers.age = document.getElementById("age").value;
+  answers.gender = gender.value;
 
   step = 1;
   render();
 }
 
-window.next = function(){
-  const a = document.querySelector('input[name=ans]:checked');
+function nextQuestion(){
 
-  if(!a){
-    alert('یک گزینه انتخاب کنید');
+  const ans = document.querySelector('input[name="ans"]:checked');
+
+  if(!ans){
+    alert("یک گزینه انتخاب کنید");
     return;
   }
 
-  answers['q'+step] = a.value;
+  answers["q"+step] = ans.value;
 
   if(step < questions.length){
     step++;
     render();
-  } else {
+  }else{
     finish();
   }
 }
 
-/* ---------- Google Sheets ---------- */
-
 function finish(){
 
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      age: answers.age,
-      gender: answers.gender,
-      answers: questions.map((_,i)=>answers['q'+(i+1)])
+  fetch(GOOGLE_SCRIPT_URL,{
+    method:"POST",
+    body:JSON.stringify({
+      age:answers.age,
+      gender:answers.gender,
+      answers:questions.map((_,i)=>answers["q"+(i+1)])
     })
   });
 
   app.innerHTML = `
-    <div>
-      <h2>🎉 پایان پرسشنامه</h2>
-      <p>پاسخ شما با موفقیت ثبت شد</p>
-    </div>
+    <h2>🎉 پایان پرسشنامه</h2>
+    <p>پاسخ شما با موفقیت ثبت شد.</p>
   `;
 }
 
 render();
 
-</script>
-
-</body>
+</script></body>
 </html>
