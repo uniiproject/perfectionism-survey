@@ -3,28 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>پرسشنامه کمال‌گرایی</title>
+<title>پرسشنامه فرسودگی تحصیلی</title>
 
 <style>
 body{
   font-family:tahoma;
   margin:0;
-  background:linear-gradient(135deg,#ffe4ec,#fff);
   min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
+
+  /* 🌸 بک‌گراند گل صورتی واقعی */
+  background-image: url("https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
+
+/* لایه روشن برای خوانایی بهتر */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(255, 230, 245, 0.65);
+  z-index:0;
+}
+
 .box{
   width:90%;
   max-width:750px;
-  background:#fff;
+  background:rgba(255,255,255,0.92);
   padding:25px;
   border-radius:15px;
   box-shadow:0 10px 30px rgba(0,0,0,.1);
+  position:relative;
+  z-index:1;
 }
+
 .btn{
-  background:#ff4f86;
+  background:#b388ff;
   color:#fff;
   border:none;
   padding:12px 18px;
@@ -32,11 +53,12 @@ body{
   cursor:pointer;
   margin-top:15px;
 }
+
 .option{
   display:block;
   margin:10px 0;
   padding:10px;
-  border:1px solid #ddd;
+  border:1px solid #e0d4ff;
   border-radius:10px;
 }
 </style>
@@ -50,57 +72,51 @@ body{
 
 <script>
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyevLJ9bYfyKdBi0reS3uB6o8ITGydX85DsIHCYFn0hbQS9CHYj4kTvD3fv0tkkEjRFXw/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9kjcA-k_lNqYOAxEVrm3mbfXfM6i_2pIA5NpanLUWpnZOzbWlji23zDU4c8k5-iFg/exec";
 
 /* ---------- INTRO ---------- */
 const introText = `
-شرکت‌کننده گرامی،
+پرسشنامه فرسودگی تحصیلی
 
-این پرسشنامه صرفاً در چارچوب یک پژوهش دانشگاهی تهیه شده است. اطلاعات شما کاملاً محرمانه است و فقط برای اهداف علمی استفاده می‌شود.
+این پرسشنامه صرفاً برای اهداف پژوهشی طراحی شده است.
+اطلاعات شما کاملاً محرمانه است و فقط برای پژوهش استفاده می‌شود.
 
-با سپاس از مشارکت شما.
+از همکاری شما سپاسگزاریم.
 `;
 
-/* ---------- 30 QUESTIONS ---------- */
+/* ---------- QUESTIONS ---------- */
 const questions = [
-"نمیتوانم حتی یک اشتباه را در کارم تحمل کنم.",
-"به چیزی کمتر از کامل و ایده‌آل بودن قانع نمیشوم.",
-"هرچقدر کاری را خوب انجام داده باشم، باز هم ناراضی هستم.",
-"وقتی به هدف هایم میرسم باز هم احساس نارضایتی میکنم.",
-"احساس میکنم همیشه باید موفق باشم.",
-"اهداف و آرمان هایم بسیار عالی هستند.",
-"هرچقدر کاری را درست انجام داده باشم باز هم حس میکنم کامل نیست.",
-"اگر حتی یک اشتباه در کارم باشد ناراحت میشوم.",
-"در مورد کارهای جزئی تردید میکنم.",
-"احساس میکنم خیلی کمال گرا هستم.",
-"از بستگانم انتظار کامل بودن دارم.",
-"از دیگران انتظار دارم کار را بدون نقص انجام دهند.",
-"نمی‌توانم اشتباه دیگران را تحمل کنم.",
-"هیچوقت از عملکرد دیگران راضی نیستم.",
-"انتظار دارم دیگران منظم و دقیق باشند.",
-"وقتی کاری نصفه انجام شود، انگار انجام نشده.",
-"انتظار دارم دیگران اهداف عالی داشته باشند.",
-"تصور میکنم دیگران باید انتظاراتم را برآورده کنند.",
-"نمی‌توانم نسبت به افراد بی‌هدف احساس خوبی داشته باشم.",
-"خانواده از من توقع کامل بودن دارند.",
-"اطرافیان انتظار موفقیت کامل از من دارند.",
-"احساس میکنم دیگران کارهایم را نقد میکنند.",
-"حتی وقتی خوب کار میکنم باز هم انتظار بیشتری هست.",
-"احساس میکنم دیگران بیش از حد از من توقع دارند.",
-"در کودکی اگر اشتباه میکردم سرزنش میشدم.",
-"والدینم اشتباهاتم را نادیده نمی‌گرفتند.",
-"والدینم از من انتظار عالی بودن داشتند.",
-"احساس میکنم هیچوقت نمیتوانم توقعات خانواده را برآورده کنم.",
-"اگر اشتباه کنم دیگران من را تحقیر میکنند.",
-"دیگران از من انتظار بی‌نقص بودن دارند."
+"احساس میکنم که به خاطر فعالیت های مربوط به تحصیل تهی شده‌ام.",
+"در پایان روز در دانشگاه احساس بی رمقی میکنم.",
+"وقتی صبح بیدار میشوم و مجبورم روز دیگری در دانشگاه سپری کنم احساس خستگی میکنم.",
+"با مطالعه یا حضور در کلاس به من فشار می‌آید.",
+"به خاطر انجام فعالیت های مربوط به تحصیل احساس فرسودگی میکنم.",
+"از زمان قبولی و ثبت نام در دانشگاه نسبت به دروسم کم علاقه شده‌ام.",
+"نسبت به دروسم شور و شوق کمتری دارم.",
+"نسبت به اهمیت دروسم تردید دارم.",
+"نسبت به کاربرد دروسم بیشتر بدگمان شده ام.",
+"به طور موثری میتوانم مشکلاتی را که در فعالیت های مربوط به تحصیلم بوجود می‌آید را حل کنم.",
+"معتقدم که مشارکت موثری در کلاس ها دارم.",
+"به عقیده خودم دانشجوی خوبی هستم.",
+"وقتی به اهداف تحصیلی ام می‌رسم احساس برانگیختگی میکنم.",
+"موارد جالب زیادی را در جریان تحصیل یاد گرفته‌ام.",
+"در طول کلاس اطمینان دارم که در انجام کارها مؤثر هستم."
 ];
 
-const options = ['کاملاً موافق','موافق','نظری ندارم','مخالف','کاملاً مخالف'];
+/* ---------- OPTIONS ---------- */
+const options = [
+"هرگز",
+"خیلی",
+"نسبتا کم",
+"گاهی",
+"نسبتا زیاد",
+"بیشتر",
+"همیشه"
+];
 
 let step = -1;
 let answers = {};
-
-const app = document.getElementById('app');
+const app = document.getElementById("app");
 
 /* ---------- RENDER ---------- */
 function render(){
@@ -194,11 +210,11 @@ function next(){
 function finish(){
 
   fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      age: answers.age,
-      gender: answers.gender,
-      answers: questions.map((_,i)=>answers["q"+(i+1)])
+    method:"POST",
+    body:JSON.stringify({
+      age:answers.age,
+      gender:answers.gender,
+      answers:questions.map((_,i)=>answers["q"+(i+1)])
     })
   });
 
